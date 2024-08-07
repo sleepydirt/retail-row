@@ -8,6 +8,6 @@ This project is created with:
 
 - `create-react-app` as the frontend framework
 - `react-bootstrap` for UI components
-- `Firebase` as the backend solution\
+- `Firebase` as the backend solution
 
   and thanks to `carousell` for UI/UX inspiration.
