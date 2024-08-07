@@ -142,7 +142,7 @@ export default function PostPageDetails() {
             <span className="ms-2">{owner}</span>
           </Col>
           <Col xxl="12">
-            <Image src={image} style={{ width: "100%" }} />
+            <Image src={image} style={{ width: "100%", maxHeight: "600px" }} />
           </Col>
           <Col>
             <Card style={{ border: "none" }}>

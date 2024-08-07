@@ -92,6 +92,7 @@ function ImageSquare({ post }) {
       style={{
         display: "block",
         width: "20rem",
+        height: "30rem",
         marginLeft: "1rem",
         marginTop: "2rem",
         textDecoration: "none",
@@ -102,10 +103,10 @@ function ImageSquare({ post }) {
       className="post-link-container"
     >
       <Container
-        className="d-flex justify-content-center align-items-center"
-        style={{}}
+        className="d-flex flex-column justify-content-between align-items-center"
+        style={{ height: "100%" }}
       >
-        <Row style={{ width: "100%" }}>
+        <Row style={{ width: "100%", height: "100%" }}>
           <Col xs={12} className="my-3 d-flex align-items-center px-0">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
@@ -137,7 +138,18 @@ function ImageSquare({ post }) {
           <Col xs={12}>
             <Card style={{ border: "none" }}>
               <Card.Body className="px-0">
-                <Card.Text className="my-0">{caption}</Card.Text>
+                <Card.Text
+                  className="my-0"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {caption}
+                </Card.Text>
                 <Card.Text className="h6 my-0">S${price}</Card.Text>
                 <Card.Text>{condition}</Card.Text>
               </Card.Body>
