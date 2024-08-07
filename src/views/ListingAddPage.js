@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
@@ -39,6 +39,7 @@ export default function ListingAddPage() {
       price,
       image: imageUrl,
       owner: user.email,
+      createdAt: serverTimestamp(),
     });
     navigate("/");
   }
