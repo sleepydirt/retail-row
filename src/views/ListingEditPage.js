@@ -47,6 +47,7 @@ export default function ListingEditPage() {
       desc,
       condition,
       price,
+      ownerUID: user.uid,
       image: imageUrl,
     });
     navigate("/");
@@ -64,7 +65,13 @@ export default function ListingEditPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (user?.photoURL) setPhotoURL(user.photoURL);
+    if (user?.photoURL) {
+      setPhotoURL(user.photoURL);
+    } else {
+      setPhotoURL(
+        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+      );
+    }
     if (!user) navigate("/login");
     getPost(id);
 

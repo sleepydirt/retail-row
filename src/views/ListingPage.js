@@ -154,7 +154,13 @@ export default function ListingPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (user?.photoURL) setPhotoURL(user.photoURL);
+    if (user?.photoURL) {
+      setPhotoURL(user.photoURL);
+    } else {
+      setPhotoURL(
+        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+      );
+    }
     getPost(id);
     if (user && user.email) {
       setUserEmail(user.email);

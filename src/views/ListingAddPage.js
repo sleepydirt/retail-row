@@ -40,6 +40,7 @@ export default function ListingAddPage() {
       price,
       image: imageUrl,
       owner: user.email,
+      ownerUID: user.uid,
       createdAt: serverTimestamp(),
     });
     navigate("/");
@@ -48,8 +49,13 @@ export default function ListingAddPage() {
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
-    if (user?.photoURL) setPhotoURL(user.photoURL);
-
+    if (user?.photoURL) {
+      setPhotoURL(user.photoURL);
+    } else {
+      setPhotoURL(
+        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+      );
+    }
     if (user && user.email) {
       setUserEmail(user.email);
     }
