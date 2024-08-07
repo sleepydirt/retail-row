@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { auth, storage } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import { Button, Container, Form, Image, Modal } from "react-bootstrap";
 
@@ -43,11 +48,18 @@ export default function Profile() {
   async function updateProfileImage() {
     if (!imageFile) return;
 
+    const oldPhotoURL = user.photoURL;
+
     const imageReference = ref(
       storage,
       `profile/${user.uid}/${imageFile.name}`
     );
     try {
+      if (oldPhotoURL) {
+        const oldImageRef = ref(storage, oldPhotoURL);
+        await deleteObject(oldImageRef);
+      }
+
       const response = await uploadBytes(imageReference, imageFile);
       const imageUrl = await getDownloadURL(response.ref);
 
