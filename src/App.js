@@ -6,6 +6,7 @@ import ListingEditPage from "./views/ListingEditPage";
 import ListingPage from "./views/ListingPage";
 import LoginPage from "./views/LoginPage";
 import SignUpPage from "./views/SignUpPage";
+import LandingPage from "./views/LandingPage";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/add" element={<ListingAddPage />} />
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/update/:id" element={<ListingEditPage />} />
         <Route path="/posts/:id" element={<ListingPage />} />
