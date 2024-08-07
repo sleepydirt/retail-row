@@ -2,6 +2,13 @@
 
 Retail Row is a web-based consumer to consumer marketplace buying and selling new and secondhand goods based in Singapore.
 
+### Features
+
+- [] User login and authentication with `Firebase`
+- [] Create, read, update and delete product listings
+- [] Page view for each listing
+- [] Basic messaging system between buyers and sellers
+
 ### Credits
 
 This project is created with:
