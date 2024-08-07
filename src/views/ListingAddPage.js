@@ -132,8 +132,8 @@ export default function PostPageAdd() {
               onChange={(e) => setCondition(e.target.value)}
               value={condition}
             >
-              <option value="new">New</option>
-              <option value="used">Used</option>
+              <option value="New">New</option>
+              <option value="Used">Used</option>
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="price">
