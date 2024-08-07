@@ -21,6 +21,7 @@ export default function ListingEditPage() {
   const [desc, setDesc] = useState("");
   const [condition, setCondition] = useState("");
   const [price, setPrice] = useState("");
+  const [photoURL, setPhotoURL] = useState();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -63,7 +64,7 @@ export default function ListingEditPage() {
 
   useEffect(() => {
     if (loading) return;
-
+    if (user?.photoURL) setPhotoURL(user.photoURL);
     if (!user) navigate("/login");
     getPost(id);
 
@@ -92,10 +93,11 @@ export default function ListingEditPage() {
             Retail Row
           </Navbar.Brand>
           <Nav className="align-items-center">
-            <Nav.Link className="d-flex align-items-center">
+            <Nav.Link className="d-flex align-items-center" href="/profile">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                src={photoURL}
                 width={"32px"}
+                height={"32px"}
                 alt="profile"
                 style={{ borderRadius: "50%" }}
               />

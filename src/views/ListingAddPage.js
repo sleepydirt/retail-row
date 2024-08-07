@@ -18,6 +18,7 @@ export default function ListingAddPage() {
   const [imagePreview, setImagePreview] = useState("");
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
+  const [photoURL, setPhotoURL] = useState();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -47,6 +48,7 @@ export default function ListingAddPage() {
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/login");
+    if (user?.photoURL) setPhotoURL(user.photoURL);
 
     if (user && user.email) {
       setUserEmail(user.email);
@@ -73,10 +75,11 @@ export default function ListingAddPage() {
             Retail Row
           </Navbar.Brand>
           <Nav className="align-items-center">
-            <Nav.Link className="d-flex align-items-center">
+            <Nav.Link className="d-flex align-items-center" href="/profile">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                src={photoURL}
                 width={"32px"}
+                height={"32px"}
                 alt="profile"
                 style={{ borderRadius: "50%" }}
               />

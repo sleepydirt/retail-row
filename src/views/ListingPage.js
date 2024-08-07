@@ -43,6 +43,7 @@ export default function ListingPage() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showOwnerModal, setShowOwnerModal] = useState(false);
+  const [photoURL, setPhotoURL] = useState();
 
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return "Date unknown";
@@ -153,8 +154,8 @@ export default function ListingPage() {
 
   useEffect(() => {
     if (loading) return;
+    if (user?.photoURL) setPhotoURL(user.photoURL);
     getPost(id);
-
     if (user && user.email) {
       setUserEmail(user.email);
     } else {
@@ -176,10 +177,11 @@ export default function ListingPage() {
             Retail Row
           </Navbar.Brand>
           <Nav className="align-items-center">
-            <Nav.Link className="d-flex align-items-center">
+            <Nav.Link className="d-flex align-items-center" href="/profile">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                src={photoURL}
                 width={"32px"}
+                height={"32px"}
                 alt="profile"
                 style={{ borderRadius: "50%" }}
               />
