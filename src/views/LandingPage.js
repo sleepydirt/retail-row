@@ -11,7 +11,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) navigate("/home");
+    if (user) navigate("/");
   }, [loading, navigate, user]);
 
   return (

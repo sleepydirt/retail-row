@@ -22,7 +22,7 @@ export default function PostPageHome() {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) navigate("/");
+    if (!user) navigate("/onboard");
 
     getAllPosts();
   }, [loading, navigate, user]);

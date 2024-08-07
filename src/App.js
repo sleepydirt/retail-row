@@ -14,8 +14,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/add" element={<ListingAddPage />} />
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/onboard" element={<LandingPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/update/:id" element={<ListingEditPage />} />
         <Route path="/posts/:id" element={<ListingPage />} />

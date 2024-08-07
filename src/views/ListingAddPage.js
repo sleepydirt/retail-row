@@ -12,6 +12,9 @@ export default function PostPageAdd() {
   const [user, loading] = useAuthState(auth);
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState("");
+  const [desc, setDesc] = useState("");
+  const [condition, setCondition] = useState("");
+  const [price, setPrice] = useState("");
   const [imagePreview, setImagePreview] = useState("");
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
@@ -31,6 +34,9 @@ export default function PostPageAdd() {
     const imageUrl = await getDownloadURL(response.ref);
     await addDoc(collection(db, "posts"), {
       caption,
+      desc,
+      condition,
+      price,
       image: imageUrl,
       owner: user.email,
     });
@@ -98,15 +104,45 @@ export default function PostPageAdd() {
             "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
         }}
       >
-        <h1 style={{ marginBlock: "1rem" }}>Add Post</h1>
+        <h1 style={{ marginBlock: "1rem" }}>New Listing</h1>
         <Form>
           <Form.Group className="mb-3" controlId="caption">
-            <Form.Label>Caption</Form.Label>
+            <h3 style={{ marginBlock: "1rem" }}>Item details</h3>
+            <Form.Label>Listing Title</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter your caption"
+              placeholder="Name your listing"
               value={caption}
               onChange={(text) => setCaption(text.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="desc">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={6}
+              placeholder="Include any other details helpful to buyers."
+              value={desc}
+              onChange={(text) => setDesc(text.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="condition">
+            <Form.Label>Condition</Form.Label>
+            <Form.Select
+              onChange={(e) => setCondition(e.target.value)}
+              value={condition}
+            >
+              <option value="new">New</option>
+              <option value="used">Used</option>
+            </Form.Select>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="price">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="S$"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
             />
           </Form.Group>
 
