@@ -1,9 +1,36 @@
 import { Container, Image, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import "../postlink.css";
 
 export default function ImageSquare({ post }) {
-  const { image, id, caption, price, owner, condition } = post;
+  const { image, id, caption, price, owner, condition, ownerUID } = post;
+  const [photoURL, setPhotoURL] = useState(
+    "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+  );
+  const storage = getStorage();
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      if (ownerUID) {
+        try {
+          const profileFolderRef = ref(storage, `profile/${ownerUID}`);
+          const fileList = await listAll(profileFolderRef);
+
+          if (fileList.items.length > 0) {
+            const fileRef = fileList.items[0];
+            const url = await getDownloadURL(fileRef);
+            setPhotoURL(url);
+          }
+        } catch (error) {
+          console.error("Error fetching profile image:", error);
+        }
+      }
+    };
+
+    fetchProfileImage();
+  }, [ownerUID, storage]);
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return "Date unknown";
     const now = new Date();
@@ -49,8 +76,9 @@ export default function ImageSquare({ post }) {
         <Row style={{ width: "100%", height: "100%" }}>
           <Col xs={12} className="my-3 d-flex align-items-center px-0">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+              src={photoURL}
               width="32px"
+              height="32px"
               alt="profile"
               style={{ borderRadius: "50%" }}
             />
