@@ -8,7 +8,7 @@ import { updateDoc, doc, getDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { FaSignOutAlt, FaPlus } from "react-icons/fa";
 
-export default function PostPageUpdate() {
+export default function ListingEditPage() {
   const params = useParams();
   const id = params.id;
   const [caption, setCaption] = useState("");

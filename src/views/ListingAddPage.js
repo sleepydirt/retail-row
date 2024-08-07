@@ -8,7 +8,7 @@ import { signOut } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { FaSignOutAlt, FaPlus } from "react-icons/fa";
 
-export default function PostPageAdd() {
+export default function ListingAddPage() {
   const [user, loading] = useAuthState(auth);
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState("");

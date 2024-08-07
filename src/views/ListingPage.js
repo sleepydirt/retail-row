@@ -26,7 +26,7 @@ import {
 } from "react-icons/fa";
 import PostModals from "../components/Modals";
 
-export default function PostPageDetails() {
+export default function ListingPage() {
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState("");
   const [owner, setOwner] = useState("");
