@@ -7,6 +7,7 @@ import ListingPage from "./views/ListingPage";
 import LoginPage from "./views/LoginPage";
 import SignUpPage from "./views/SignUpPage";
 import LandingPage from "./views/LandingPage";
+import Profile from "./views/Profile";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/update/:id" element={<ListingEditPage />} />
         <Route path="/posts/:id" element={<ListingPage />} />
+        <Route path="/profile/" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
