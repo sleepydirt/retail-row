@@ -1,9 +1,31 @@
 import { Container, Image, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 import "../postlink.css";
+
 export default function ImageSquare({ post }) {
   const { image, id, caption, price, owner, condition } = post;
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return "Date unknown";
+    const now = new Date();
+    const postDate = timestamp.toDate();
+    const diffInSeconds = Math.floor((now - postDate) / 1000);
+
+    if (diffInSeconds < 60) {
+      return "Just now";
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    } else if (diffInSeconds < 604800) {
+      const days = Math.floor(diffInSeconds / 86400);
+      return `${days} day${days > 1 ? "s" : ""} ago`;
+    } else {
+      const weeks = Math.floor(diffInSeconds / 604800);
+      return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
+    }
+  };
   return (
     <Link
       to={`posts/${id}`}
@@ -32,7 +54,12 @@ export default function ImageSquare({ post }) {
               alt="profile"
               style={{ borderRadius: "50%" }}
             />
-            <span className="ms-2">{owner}</span>
+            <span className="ms-2">
+              {owner}
+              <p className="mb-0 text-muted" style={{ fontSize: "0.8rem" }}>
+                {formatTimestamp(post.createdAt)}
+              </p>
+            </span>
           </Col>
           <Col xs={12} className="px-0">
             <div
