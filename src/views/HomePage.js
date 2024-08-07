@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Nav, Navbar } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Nav,
+  Navbar,
+  Form,
+  FormControl,
+  Dropdown,
+} from "react-bootstrap";
 import { collection, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
@@ -10,8 +18,11 @@ import "../postlink.css";
 import ImageSquare from "../components/ImageSquare";
 import PostModals from "../components/Modals";
 
-export default function PostPageHome() {
+export default function HomePage() {
   const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [conditionFilter, setConditionFilter] = useState("All");
   const [user, loading] = useAuthState(auth);
   const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
@@ -59,10 +70,28 @@ export default function PostPageHome() {
     } else {
       setUserEmail(`Not logged in`);
     }
-
     getAllPosts();
   }, [loading, navigate, user]);
 
+  useEffect(() => {
+    let filtered = posts.filter((post) =>
+      post.caption.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    if (conditionFilter !== "All") {
+      filtered = filtered.filter((post) => post.condition === conditionFilter);
+    }
+
+    setFilteredPosts(filtered);
+  }, [searchQuery, conditionFilter, posts]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleConditionFilter = (condition) => {
+    setConditionFilter(condition);
+  };
   return (
     <>
       <Navbar variant="light" bg="light">
@@ -76,6 +105,34 @@ export default function PostPageHome() {
             />
             Retail Row
           </Navbar.Brand>
+          <Form inline className=" d-flex align-items-center">
+            <FormControl
+              type="text"
+              placeholder="Search posts..."
+              className="mr-sm-2"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="outline-secondary"
+                id="dropdown-condition"
+              >
+                {conditionFilter}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => handleConditionFilter("All")}>
+                  All
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => handleConditionFilter("New")}>
+                  New
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => handleConditionFilter("Used")}>
+                  Used
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Form>
           <Nav className="align-items-center">
             <Nav.Link className="d-flex align-items-center">
               <img
@@ -111,7 +168,7 @@ export default function PostPageHome() {
       <Container>
         <h1>Listings</h1>
         <Row className="d-flex justify-content-center align-items-center">
-          {posts.map((post, index) => (
+          {filteredPosts.map((post, index) => (
             <ImageSquare key={index} post={post} />
           ))}
         </Row>
