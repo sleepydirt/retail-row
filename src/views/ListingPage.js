@@ -24,6 +24,7 @@ import {
   FaPencilAlt,
   FaRegTrashAlt,
 } from "react-icons/fa";
+import PostModals from "../components/Modals";
 
 export default function PostPageDetails() {
   const [caption, setCaption] = useState("");
@@ -38,6 +39,33 @@ export default function PostPageDetails() {
   const [desc, setDesc] = useState("");
   const [condition, setCondition] = useState("");
   const [price, setPrice] = useState("");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showOwnerModal, setShowOwnerModal] = useState(false);
+
+  const handleDeletePost = () => {
+    if (user) {
+      if (user.email === owner) {
+        deletePost(id);
+      } else {
+        setShowOwnerModal(true);
+      }
+    } else {
+      setShowLoginModal(true);
+    }
+  };
+
+  const handleEditPost = () => {
+    if (user) {
+      if (user.email === owner) {
+        navigate(`/update/${id}`);
+      } else {
+        setShowOwnerModal(true);
+      }
+    } else {
+      setShowLoginModal(true);
+    }
+  };
 
   const toggleLike = () => {
     setIsLiked(!isLiked);
@@ -61,6 +89,32 @@ export default function PostPageDetails() {
     await deleteObject(imageRef);
   }
 
+  const handleLogout = async () => {
+    if (user) {
+      try {
+        await signOut(auth);
+        setShowLogoutModal(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (error) {
+        console.error("Error signing out: ", error);
+        setShowLogoutModal(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+    }
+  };
+
+  const handleCreatePost = () => {
+    if (user) {
+      navigate("/add");
+    } else {
+      setShowLoginModal(true);
+    }
+  };
+
   async function getPost(id) {
     const postDocument = await getDoc(doc(db, "posts", id));
     const post = postDocument.data();
@@ -74,11 +128,12 @@ export default function PostPageDetails() {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) navigate("/login");
     getPost(id);
 
     if (user && user.email) {
       setUserEmail(user.email);
+    } else {
+      setUserEmail(`Not logged in`);
     }
   }, [id, navigate, user, loading]);
 
@@ -105,11 +160,14 @@ export default function PostPageDetails() {
               />
               <span className="ms-2">{userEmail}</span>
             </Nav.Link>
-            <Nav.Link href="/add" className="d-flex align-items-center">
+            <Nav.Link
+              onClick={handleCreatePost}
+              className="d-flex align-items-center"
+            >
               <FaPlus />
             </Nav.Link>
             <Nav.Link
-              onClick={(e) => signOut(auth)}
+              onClick={handleLogout}
               className="d-flex align-items-center"
             >
               <FaSignOutAlt />
@@ -117,6 +175,14 @@ export default function PostPageDetails() {
           </Nav>
         </Container>
       </Navbar>
+      <PostModals
+        showLogoutModal={showLogoutModal}
+        setShowLogoutModal={setShowLogoutModal}
+        showLoginModal={showLoginModal}
+        setShowLoginModal={setShowLoginModal}
+        showOwnerModal={showOwnerModal}
+        setShowOwnerModal={setShowOwnerModal}
+      />
       <Container
         className="d-flex justify-content-center align-items-center"
         style={{ minHeight: "90vh" }}
@@ -162,13 +228,13 @@ export default function PostPageDetails() {
                   </div>
                   <span>
                     <Card.Link
-                      href={`/update/${id}`}
-                      style={{ color: "black" }}
+                      onClick={handleEditPost}
+                      style={{ cursor: "pointer", color: "black" }}
                     >
                       <FaPencilAlt size={"1.5rem"} />
                     </Card.Link>
                     <Card.Link
-                      onClick={() => deletePost(id)}
+                      onClick={handleDeletePost}
                       style={{ cursor: "pointer", color: "black" }}
                     >
                       <FaRegTrashAlt size={"1.5rem"} />

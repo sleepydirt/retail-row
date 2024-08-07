@@ -63,6 +63,7 @@ export default function PostPageUpdate() {
 
   useEffect(() => {
     if (loading) return;
+
     if (!user) navigate("/login");
     getPost(id);
 
