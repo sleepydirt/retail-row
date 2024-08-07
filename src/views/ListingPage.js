@@ -39,9 +39,33 @@ export default function ListingPage() {
   const [desc, setDesc] = useState("");
   const [condition, setCondition] = useState("");
   const [price, setPrice] = useState("");
+  const [timestamp, setTimestamp] = useState("");
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showOwnerModal, setShowOwnerModal] = useState(false);
+
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return "Date unknown";
+    const now = new Date();
+    const postDate = timestamp.toDate();
+    const diffInSeconds = Math.floor((now - postDate) / 1000);
+
+    if (diffInSeconds < 60) {
+      return "Just now";
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    } else if (diffInSeconds < 604800) {
+      const days = Math.floor(diffInSeconds / 86400);
+      return `${days} day${days > 1 ? "s" : ""} ago`;
+    } else {
+      const weeks = Math.floor(diffInSeconds / 604800);
+      return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
+    }
+  };
 
   const handleDeletePost = () => {
     if (user) {
@@ -124,6 +148,7 @@ export default function ListingPage() {
     setDesc(post.desc);
     setCondition(post.condition);
     setPrice(post.price);
+    setTimestamp(post.createdAt);
   }
 
   useEffect(() => {
@@ -205,7 +230,12 @@ export default function ListingPage() {
               alt="profile"
               style={{ borderRadius: "50%" }}
             />
-            <span className="ms-2">{owner}</span>
+            <span className="ms-2">
+              {owner}
+              <p className="mb-0 text-muted" style={{ fontSize: "0.8rem" }}>
+                {formatTimestamp(timestamp)}
+              </p>
+            </span>
           </Col>
           <Col xxl="12">
             <Image src={image} style={{ width: "100%", maxHeight: "600px" }} />
