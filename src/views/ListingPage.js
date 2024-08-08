@@ -281,6 +281,7 @@ export default function ListingPage() {
             <img
               src={ownerPhotoURL}
               width={"32px"}
+              height={"32px"}
               alt="profile"
               style={{ borderRadius: "50%" }}
             />
