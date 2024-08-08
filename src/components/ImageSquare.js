@@ -31,6 +31,7 @@ export default function ImageSquare({ post }) {
 
     fetchProfileImage();
   }, [ownerUID, storage]);
+
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return "Date unknown";
     const now = new Date();
