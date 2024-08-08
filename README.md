@@ -8,7 +8,9 @@ Retail Row is a web-based consumer to consumer marketplace buying and selling ne
 - [x] Basic user profile management
 - [x] Create, read, update and delete product listings
 - [x] Page view for each listing
-- [] Basic messaging system between buyers and sellers
+- [x] Basic serach with filters
+- [x] Privileged access management
+- [ ] Basic messaging system between buyers and sellers
 
 ### Credits
 
