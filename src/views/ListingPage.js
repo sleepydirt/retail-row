@@ -55,6 +55,19 @@ export default function ListingPage() {
     "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
   );
   const storage = getStorage();
+  const handleChatClick = () => {
+    if (!user) {
+      setShowLoginModal(true);
+    } else if (user.uid === ownerUID) {
+      setShowOwnerModal(true);
+    } else {
+      const chatId = `${user.uid}_${ownerUID}_${id}`;
+      const chatUrl = `/chats/${chatId}`;
+      const windowFeatures =
+        "width=500,height=600,resizable,scrollbars=yes,status=1";
+      window.open(chatUrl, "ChatWindow", windowFeatures);
+    }
+  };
 
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return "Date unknown";
@@ -320,7 +333,7 @@ export default function ListingPage() {
                 <Card.Text>{condition}</Card.Text>
                 <Card.Text className="h5 mb-3">Description</Card.Text>
                 <Card.Text>{desc}</Card.Text>
-                <Button className="w-100 btn-danger">
+                <Button className="w-100 btn-danger" onClick={handleChatClick}>
                   <FaCommentAlt color="white" />
                   <span className="mx-1 h6">Chat</span>
                 </Button>
