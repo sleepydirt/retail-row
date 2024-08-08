@@ -8,6 +8,7 @@ import LoginPage from "./views/LoginPage";
 import SignUpPage from "./views/SignUpPage";
 import LandingPage from "./views/LandingPage";
 import Profile from "./views/Profile";
+import Chat from "./views/Chat";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/update/:id" element={<ListingEditPage />} />
         <Route path="/posts/:id" element={<ListingPage />} />
         <Route path="/profile/" element={<Profile />} />
+        <Route path="/chats/:chatId" element={<Chat />} />
       </Routes>
     </BrowserRouter>
   );
