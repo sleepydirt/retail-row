@@ -14,7 +14,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { storage, auth, db } from "../firebase";
 import { signOut } from "firebase/auth";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
-import { ref, deleteObject } from "firebase/storage";
+import {
+  ref,
+  deleteObject,
+  getStorage,
+  listAll,
+  getDownloadURL,
+} from "firebase/storage";
 import {
   FaSignOutAlt,
   FaPlus,
@@ -43,7 +49,12 @@ export default function ListingPage() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showOwnerModal, setShowOwnerModal] = useState(false);
-  const [photoURL, setPhotoURL] = useState();
+  const [ownerUID, setOwnerUID] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
+  const [ownerPhotoURL, setOwnerPhotoURL] = useState(
+    "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+  );
+  const storage = getStorage();
 
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return "Date unknown";
@@ -150,6 +161,7 @@ export default function ListingPage() {
     setCondition(post.condition);
     setPrice(post.price);
     setTimestamp(post.createdAt);
+    setOwnerUID(post.ownerUID);
   }
 
   useEffect(() => {
@@ -168,6 +180,27 @@ export default function ListingPage() {
       setUserEmail(`Not logged in`);
     }
   }, [id, navigate, user, loading]);
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      if (ownerUID) {
+        try {
+          const profileFolderRef = ref(storage, `profile/${ownerUID}`);
+          const fileList = await listAll(profileFolderRef);
+
+          if (fileList.items.length > 0) {
+            const fileRef = fileList.items[0];
+            const url = await getDownloadURL(fileRef);
+            setOwnerPhotoURL(url);
+          }
+        } catch (error) {
+          console.error("Error fetching profile image:", error);
+        }
+      }
+    };
+
+    fetchProfileImage();
+  }, [ownerUID, storage]);
 
   return (
     <>
@@ -233,7 +266,7 @@ export default function ListingPage() {
         >
           <Col className="my-3 d-flex align-items-center">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+              src={ownerPhotoURL}
               width={"32px"}
               alt="profile"
               style={{ borderRadius: "50%" }}
