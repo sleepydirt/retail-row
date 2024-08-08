@@ -9,7 +9,18 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
-import { Button, Container, Form, Image, Modal } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Form,
+  Image,
+  Modal,
+  Nav,
+  Navbar,
+  Row,
+  Col,
+} from "react-bootstrap";
+import { FaHome } from "react-icons/fa";
 
 export default function Profile() {
   const [photoURL, setPhotoURL] = useState(
@@ -77,7 +88,37 @@ export default function Profile() {
 
   return (
     <>
-      <Container className="mt-5">
+      <Navbar variant="light" bg="light">
+        <Container>
+          <Navbar.Brand href="/" className="d-flex align-items-center">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/5/52/Rolls-Royce_Motor_Cars_logo.svg"
+              alt="brand"
+              width="24px"
+              className="mx-3"
+            />
+            Retail Row
+          </Navbar.Brand>
+          <Nav className="align-items-center">
+            <Nav.Link className="d-flex align-items-center" href="/">
+              <FaHome size="24px" />
+            </Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+      <Container
+        className="mt-5"
+        style={{
+          background: "white",
+          width: "100%",
+          maxWidth: "600px",
+          border: "1px solid #fff",
+          borderRadius: "15px",
+          padding: "1.5rem",
+          boxShadow:
+            "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
+        }}
+      >
         <h2>User Profile</h2>
         <div className="text-center mb-4">
           <Image
@@ -87,7 +128,15 @@ export default function Profile() {
             height={150}
             className="mb-3"
           />
-          <Form.Group controlId="profileImage" className="mb-3">
+          <Form.Group as={Row} className="mb-3" controlId="formEmail">
+            <Form.Label column xs="2">
+              Email
+            </Form.Label>
+            <Col xs="10">
+              <Form.Control plaintext readOnly defaultValue={user?.email} />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="profileImage" className="mb-3">
             <Form.Control
               type="file"
               onChange={handleImageChange}
@@ -98,7 +147,6 @@ export default function Profile() {
             Update Profile Picture
           </Button>
         </div>
-        <p>Email: {user?.email}</p>
       </Container>
       <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
         <Modal.Header closeButton>
